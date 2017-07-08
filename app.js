@@ -2,9 +2,18 @@ var apiKey = "9239469f010d7bb17fcc5de5107d9852";
 // TODO: Move global vars to objects
 var WEATHER = {};
 
+
 function updateData(newData) {
   WEATHER = newData;
-  console.log(WEATHER);
+  var cardMap = new Map([
+    ['card-name', WEATHER.name],
+    ['card-location', WEATHER.sys.country],
+    ['card-temp', WEATHER.main.temp]
+  ]);
+  var card = document.getElementById('card-1');
+  for (var [key, value] of cardMap) {
+    card.getElementsByClassName(String(key))[0].innerHTML = value;
+  }
 }
 
 

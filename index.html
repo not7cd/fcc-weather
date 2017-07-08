@@ -27,22 +27,22 @@
       <button type="button" name="button">Current location</button>
     </div>
     <div class="cards">
-      <div id="card" class="card container">
+      <div id="card-1" class="card container">
         <div class="row">
           <div class="col-8">
-            <h3>{{ weather.name }}</h3>
-            <h5>{{ weather.location }}</h5>
+            <h3 class="card-name">{{ weather.name }}</h3>
+            <h5 class="card-location">{{ weather.location }}</h5>
           </div>
           <div class="col-4">
             {{ weather.icon }}
           </div>
-          <div class="col-4">
+          <div class="col-4 card-temp">
             {{ weather.temperature }}
           </div>
           <div class="col-4">
             {{ weather.pressure }}
           </div>
-          <div class="col-4">
+          <div class="col-4 card-time">
             {{ weather.time }}
           </div>
         </div>
