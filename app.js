@@ -1,18 +1,23 @@
 var apiKey = "9239469f010d7bb17fcc5de5107d9852";
 // TODO: Move global vars to objects
 var WEATHER = {};
-
+var unitCelsius = true;
 
 function updateData(newData) {
   WEATHER = newData;
+
+  var temperature = unitCelsius ? (WEATHER.main.temp - 273.15) + "°C" : (5/9 * WEATHER.main.temp - 459.67) + "°F";
+  var datetime = new Date(WEATHER.dt);
   var cardMap = new Map([
     ['card-name', WEATHER.name],
     ['card-location', WEATHER.sys.country],
-    ['card-temp', WEATHER.main.temp]
+    ['card-temperature', temperature],
+    ['card-pressure', WEATHER.main.pressure + " hPa"],
+    ['card-datetime', [datetime.getHours(), datetime.getMinutes()].join(':')]
   ]);
   var card = document.getElementById('card-1');
   for (var [key, value] of cardMap) {
-    card.getElementsByClassName(String(key))[0].innerHTML = value;
+    card.getElementsByClassName(key)[0].innerHTML = value;
   }
 }
 
