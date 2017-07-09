@@ -12,6 +12,7 @@ function updateData(newData) {
     ['card-name', WEATHER.name],
     ['card-location', WEATHER.sys.country],
     ['card-temperature', temperature],
+    ['card-icon', WEATHER.weather.icon],
     ['card-pressure', WEATHER.main.pressure + " hPa"],
     ['card-datetime', [datetime.getHours(), datetime.getMinutes()].join(':')]
   ]);
