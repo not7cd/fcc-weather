@@ -1,4 +1,6 @@
+var apiUrl = "http://api.openweathermap.org/data/2.5/";
 var apiKey = "9239469f010d7bb17fcc5de5107d9852";
+
 // TODO: Move global vars to objects
 var WEATHER = {};
 var unitCelsius = true;
@@ -19,15 +21,15 @@ function getValue(target, pointer) {
 
 function updateData(newData) {
   WEATHER = newData;
-
-  var temperature = unitCelsius ? (WEATHER.main.temp - 273.15) + "°C" : (5/9 * WEATHER.main.temp - 459.67) + "°F";
+  var tempValue =  getValue(WEATHER, ['main', 'temp']);
+  var tempValueConverted = unitCelsius ? (tempValue - 273.15) + "°C" : (5 / 9 * tempValue - 459.67) + "°F";
   var datetime = new Date(WEATHER.dt);
   var cardMap = new Map([
-    ['card-name', getValue(WEATHER,['name'])],
-    ['card-location', WEATHER.sys.country],
-    ['card-temperature', temperature],
-    ['card-icon', getValue(WEATHER,['weather','main'])],
-    ['card-pressure', getValue(WEATHER,['main','pressure']) + " hPa"],
+    ['card-name', getValue(WEATHER, ['name'])],
+    ['card-location', getValue(WEATHER, ['sys', 'country'])],
+    ['card-temperature', tempValueConverted],
+    ['card-icon', getValue(WEATHER, ['weather', 0, 'main'])],
+    ['card-pressure', getValue(WEATHER, ['main', 'pressure']) + " hPa"],
     ['card-datetime', [datetime.getHours(), datetime.getMinutes()].join(':')]
   ]);
   var card = document.getElementById('card-1');
@@ -38,7 +40,7 @@ function updateData(newData) {
 
 
 function getWeather(key) {
-  var url = "http://api.openweathermap.org/data/2.5/weather?lat=35&lon=139" + "&appid=" + key;
+  var url = apiUrl + "weather?lat=35&lon=139" + "&appid=" + key;
   var http_weather = new XMLHttpRequest();
   http_weather.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
