@@ -3,17 +3,31 @@ var apiKey = "9239469f010d7bb17fcc5de5107d9852";
 var WEATHER = {};
 var unitCelsius = true;
 
+function getValue(target, pointer) {
+  if (typeof pointer === "string") {
+    console.log('1');
+    return target[pointer];
+  } else if (pointer.length <= 1) {
+    console.log('2');
+    return target[pointer[0]];
+  } else {
+    console.log('3');
+    parentPointer = pointer.shift();
+    return getValue(target[parentPointer], pointer);
+  }
+}
+
 function updateData(newData) {
   WEATHER = newData;
 
   var temperature = unitCelsius ? (WEATHER.main.temp - 273.15) + "°C" : (5/9 * WEATHER.main.temp - 459.67) + "°F";
   var datetime = new Date(WEATHER.dt);
   var cardMap = new Map([
-    ['card-name', WEATHER.name],
+    ['card-name', getValue(WEATHER,['name'])],
     ['card-location', WEATHER.sys.country],
     ['card-temperature', temperature],
-    ['card-icon', WEATHER.weather.icon],
-    ['card-pressure', WEATHER.main.pressure + " hPa"],
+    ['card-icon', getValue(WEATHER,['weather','main'])],
+    ['card-pressure', getValue(WEATHER,['main','pressure']) + " hPa"],
     ['card-datetime', [datetime.getHours(), datetime.getMinutes()].join(':')]
   ]);
   var card = document.getElementById('card-1');
