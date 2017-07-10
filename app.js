@@ -1,5 +1,7 @@
-var apiUrl = "http://api.openweathermap.org/data/2.5/";
-var apiKey = "9239469f010d7bb17fcc5de5107d9852";
+var API = {
+  "url": "http://api.openweathermap.org/data/2.5/",
+  "key": "9239469f010d7bb17fcc5de5107d9852"
+};
 
 // TODO: Move global vars to objects
 var WEATHER = {};
@@ -39,8 +41,8 @@ function updateData(newData) {
 }
 
 
-function getWeather(key) {
-  var url = apiUrl + "weather?lat=35&lon=139" + "&appid=" + key;
+function getWeather() {
+  var url = API.url + "weather?lat=35&lon=139" + "&appid=" + API.key;
   var http_weather = new XMLHttpRequest();
   http_weather.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -53,4 +55,4 @@ function getWeather(key) {
   http_weather.send();
 }
 
-getWeather(apiKey);
+getWeather(API.key);
