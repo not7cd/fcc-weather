@@ -16,7 +16,7 @@ function getValue(target, pointer) {
     return target[pointer];
   } else if (pointer.length <= 1) {
     console.log('2');
-    return target[pointer[0]];
+    return target[pointer.shift()];
   } else {
     console.log('3');
     parentPointer = pointer.shift();
@@ -70,4 +70,4 @@ function getWeather() {
   http_weather.send();
 }
 
-getWeather(API.key);
+getWeather();
