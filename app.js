@@ -3,9 +3,12 @@ var API = {
   "key": "9239469f010d7bb17fcc5de5107d9852"
 };
 
+var config = {
+  "tempInCelsius": true
+};
+
 // TODO: Move global vars to objects
 var WEATHER = {};
-var unitCelsius = true;
 
 function getValue(target, pointer) {
   if (typeof pointer === "string") {
@@ -23,10 +26,13 @@ function getValue(target, pointer) {
 
 function updateData(newData) {
   WEATHER = newData;
-  var tempValue =  getValue(WEATHER, ['main', 'temp']);
-  var tempValueConverted = unitCelsius ? (tempValue - 273.15) + "°C" : (5 / 9 * tempValue - 459.67) + "°F";
+  var tempValue = getValue(WEATHER, ['main', 'temp']);
+  // convert temperature in K to C or F based on bool config.tempInCelsius
+  var tempValueConverted = config.tempInCelsius ?
+                            (tempValue - 273.15) + "°C" :
+                            (5 / 9 * tempValue - 459.67) + "°F";
   var datetime = new Date(WEATHER.dt);
-  var cardMap = new Map([
+  var map = new Map([
     ['card-name', getValue(WEATHER, ['name'])],
     ['card-location', getValue(WEATHER, ['sys', 'country'])],
     ['card-temperature', tempValueConverted],
@@ -34,9 +40,16 @@ function updateData(newData) {
     ['card-pressure', getValue(WEATHER, ['main', 'pressure']) + " hPa"],
     ['card-datetime', [datetime.getHours(), datetime.getMinutes()].join(':')]
   ]);
-  var card = document.getElementById('card-1');
-  for (var [key, value] of cardMap) {
-    card.getElementsByClassName(key)[0].innerHTML = value;
+
+  return map
+}
+
+function updateModel(element, mappedValues) {
+  // get DOM element
+  var card = document.getElementById(element);
+  // Update it's inner data using values maped to class names
+  for (var [eltClass, value] of mappedValues) {
+    card.getElementsByClassName(eltClass)[0].innerHTML = value;
   }
 }
 
@@ -47,7 +60,9 @@ function getWeather() {
   http_weather.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       var response = JSON.parse(this.responseText);
-      updateData(response);
+      // update Data with
+      data = updateData(response);
+      updateModel('card-1', data);
       // updateDom(WEATHER);
     }
   };
