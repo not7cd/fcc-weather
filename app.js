@@ -74,10 +74,8 @@
     http_weather.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         var response = JSON.parse(this.responseText);
-        // update Data with
-        var data = updateData(response);
-        updateModel('card-1', data);
-        // updateDom(WEATHER);
+        // NOTE: HELL
+        updateModel('card-1', updateData(response));
       }
     };
     http_weather.open("GET", url, true);
@@ -98,10 +96,9 @@
     }
   }
 
-  // var arr =
   getLocation();
-  // console.log(arr);
-  // var coordLat = arr[0], coordLon = arr[1];
-
+  // getLocation calls getWeather
+  // getWeather calls updateModel(updateData())
+  // fml
 
 }());
