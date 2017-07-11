@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  
+
   var API = {
     "url": "http://api.openweathermap.org/data/2.5/",
     "key": "9239469f010d7bb17fcc5de5107d9852"
@@ -14,6 +14,7 @@
   var WEATHER = {};
 
   function getValue(target, pointer) {
+    console.log(pointer);
     if (typeof pointer === "string") {
       console.log('1');
       return target[pointer];
@@ -22,7 +23,7 @@
       return target[pointer.shift()];
     } else {
       console.log('3');
-      parentPointer = pointer.shift();
+      var parentPointer = pointer.shift();
       return getValue(target[parentPointer], pointer);
     }
   }
@@ -44,7 +45,7 @@
       ['card-datetime', [datetime.getHours(), datetime.getMinutes()].join(':')]
     ]);
 
-    return map
+    return map;
   }
 
   function updateModel(element, mappedValues) {
@@ -64,7 +65,7 @@
       if (this.readyState == 4 && this.status == 200) {
         var response = JSON.parse(this.responseText);
         // update Data with
-        data = updateData(response);
+        var data = updateData(response);
         updateModel('card-1', data);
         // updateDom(WEATHER);
       }
