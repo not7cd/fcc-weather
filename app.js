@@ -7,7 +7,8 @@
   };
 
   var config = {
-    "tempInCelsius": true
+    "tempInCelsius": true,
+    "precision": 1000
   };
 
   // TODO: Move global vars to objects
@@ -52,14 +53,16 @@
     // get DOM element
     var card = document.getElementById(element);
     // Update it's inner data using values maped to class names
-    for (var [eltClass, value] of mappedValues) {
-      card.getElementsByClassName(eltClass)[0].innerHTML = value;
+    for (var [key, value] of mappedValues) {
+      card.getElementsByClassName(key)[0].innerHTML = value;
     }
   }
 
 
-  function getWeather() {
-    var url = API.url + "weather?lat=35&lon=139" + "&appid=" + API.key;
+  function getWeather(lat, lon) {
+    // console.log(lat, lon);
+
+    var url = API.url + "weather?lat=" + String(lat) + "&lon=" + String(lon) + "&appid=" + API.key;
     var http_weather = new XMLHttpRequest();
     http_weather.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -74,6 +77,24 @@
     http_weather.send();
   }
 
-  getWeather();
+  function getLocation() {
+    var lat = 0, lon = 0;
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        lat = position.coords.latitude;
+        lon = position.coords.longitude;
+        console.log([lat, lon]);
+        getWeather(lat, lon);
+      });
+    } else {
+      console.log('geolocation IS NOT available');
+    }
+  }
+
+  // var arr =
+  getLocation();
+  // console.log(arr);
+  // var coordLat = arr[0], coordLon = arr[1];
+
 
 }());
