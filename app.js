@@ -7,8 +7,7 @@
   };
 
   var config = {
-    "tempInCelsius": true,
-    "precision": 1000
+    "tempInCelsius": true
   };
 
   // TODO: Move global vars to objects
@@ -36,13 +35,21 @@
     var tempValueConverted = config.tempInCelsius ?
       (tempValue - 273.15) + "°C" :
       (5 / 9 * tempValue - 459.67) + "°F";
+
+    // create Date object, init with time from API response
     var datetime = new Date(WEATHER.dt);
     var map = new Map([
+      // set value for card-name as value name from WEATHER
       ['card-name', getValue(WEATHER, ['name'])],
+      // set value for card-location as value sys.country from WEATHER
       ['card-location', getValue(WEATHER, ['sys', 'country'])],
+      // set value for card-temperature as previously converted tempValueConverted
       ['card-temperature', tempValueConverted],
+      // set value for card-icon as value weather[0].main from WEATHER
       ['card-icon', getValue(WEATHER, ['weather', 0, 'main'])],
+      // set value for card-icon as value main.pressure from WEATHER
       ['card-pressure', getValue(WEATHER, ['main', 'pressure']) + " hPa"],
+      // set value for card-icon as formated values from datetime object
       ['card-datetime', [datetime.getHours(), datetime.getMinutes()].join(':')]
     ]);
 
